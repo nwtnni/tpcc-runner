@@ -72,7 +72,7 @@ public:
         }
         // allocate memory in writeset
         LogRecord<Record>& lr =
-            create_logrecord(LogType::UPDATE, rec_key, std::move(Cache::allocate<Record>()));
+            create_logrecord(LogType::UPDATE, rec_key, Cache::allocate<Record>());
         Record* rec_ptr_in_ws = lr.rec_ptr.get();
         // copy from database
         rec_ptr_in_ws->deep_copy_from(*rec_ptr_in_db);
@@ -83,7 +83,7 @@ public:
     template <IsHistory Record>
     Record* apply_insert_to_writeset() {
         typename RecordToWS<Record>::type& ws = get_ws<Record>();
-        ws.emplace_back(LogType::INSERT, std::move(Cache::allocate<Record>()));
+        ws.emplace_back(LogType::INSERT, Cache::allocate<Record>());
         return ws.back().rec_ptr.get();
     }
 
@@ -112,7 +112,7 @@ public:
 #endif
         // allocate memory in writeset
         LogRecord<Record>& lr =
-            create_logrecord(LogType::INSERT, rec_key, std::move(Cache::allocate<Record>()));
+            create_logrecord(LogType::INSERT, rec_key, Cache::allocate<Record>());
         return lr.rec_ptr.get();
     }
 
@@ -138,7 +138,7 @@ public:
             throw std::runtime_error("Record not found in db");
         }
         LogRecord<Record>& lr =
-            create_logrecord(LogType::DELETE, rec_key, std::move(Cache::allocate<Record>()));
+            create_logrecord(LogType::DELETE, rec_key, Cache::allocate<Record>());
         lr.it = it;
         return true;
     }

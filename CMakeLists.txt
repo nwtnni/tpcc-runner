@@ -142,22 +142,22 @@ if ("${CC_ALG}" STREQUAL "NAIVE")
 elseif ("${CC_ALG}" STREQUAL "SILO")
   set(CMAKE_CXX_STANDARD 17)
   list(APPEND CC_LINK_LIBRARIES "masstree")
-  add_dep(masstree https://github.com/wattlebirdaz/masstree-beta.git master)
+  add_dep(masstree https://github.com/nwtnni/masstree-beta.git master)
   list(APPEND CC_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/") # masstree
 elseif ("${CC_ALG}" STREQUAL "NOWAIT")
   set(CMAKE_CXX_STANDARD 17)
   list(APPEND CC_LINK_LIBRARIES "masstree")
-  add_dep(masstree https://github.com/wattlebirdaz/masstree-beta.git master)
+  add_dep(masstree https://github.com/nwtnni/masstree-beta.git master)
   list(APPEND CC_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/") # masstree
 elseif ("${CC_ALG}" STREQUAL "MVTO")
   set(CMAKE_CXX_STANDARD 17)
   list(APPEND CC_LINK_LIBRARIES "masstree")
-  add_dep(masstree https://github.com/wattlebirdaz/masstree-beta.git MVTO) # MVTO branch
+  add_dep(masstree https://github.com/nwtnni/masstree-beta.git master)
   list(APPEND CC_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/") # masstree
 elseif ("${CC_ALG}" STREQUAL "WAITDIE")
 set(CMAKE_CXX_STANDARD 17)
   list(APPEND CC_LINK_LIBRARIES "masstree")
-  add_dep(masstree https://github.com/wattlebirdaz/masstree-beta.git master)
+  add_dep(masstree https://github.com/nwtnni/masstree-beta.git master)
   list(APPEND CC_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/") # masstree
 endif()
 
