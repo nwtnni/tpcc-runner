@@ -7,6 +7,7 @@
 #include "benchmarks/tpcc/include/config.hpp"
 #include "benchmarks/tpcc/include/tx_runner.hpp"
 #include "benchmarks/tpcc/include/tx_utils.hpp"
+#include "cxlalloc.h"
 #include "indexes/masstree.hpp"
 #include "protocols/common/epoch_manager.hpp"
 #include "protocols/silo/include/silo.hpp"
@@ -16,13 +17,15 @@
 #include "utils/logger.hpp"
 #include "utils/utils.hpp"
 
-volatile mrcu_epoch_type active_epoch = 1;
-volatile std::uint64_t globalepoch = 1;
+relaxed_atomic<mrcu_epoch_type> active_epoch = 1;
+relaxed_atomic<mrcu_epoch_type> globalepoch = 1;
 volatile bool recovering = false;
 
 template <typename Protocol>
 void run_tx(int* flag, ThreadLocalData& t_data, uint32_t worker_id, EpochManager<Protocol>& em) {
     Worker<Protocol> w(worker_id);
+    cxlalloc_init("", 1ull << 34, worker_id, 64, 0, 1);
+
     em.set_worker(worker_id, &w);
     while (__atomic_load_n(flag, __ATOMIC_ACQUIRE)) {
         Transaction tx(w);
@@ -54,6 +57,7 @@ int main(int argc, const char* argv[]) {
     uint16_t num_warehouses = static_cast<uint16_t>(std::stoi(argv[1], nullptr, 10));
     int num_threads = std::stoi(argv[2], nullptr, 10);
     int seconds = std::stoi(argv[3], nullptr, 10);
+    cxlalloc_init("", 1ull << 34, num_threads + 1, 64, 0, 1);
 
     assert(seconds > 0);
 

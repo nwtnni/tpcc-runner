@@ -183,7 +183,6 @@ file(GLOB_RECURSE UTILS_SRCS
 ###############################################################################
 
 # Add common dependencies
-add_dep(mimalloc https://github.com/microsoft/mimalloc v1.7.1)
 add_dep(googletest https://github.com/google/googletest.git main)
 
 set(TPCCRUNNER_SRCS "")
@@ -193,14 +192,17 @@ set(TPCCRUNNER_INCLUDE_DIRECTORIES "")
 set(TPCCRUNNER_LINK_LIBRARIES "")
 set(TPCCRUNNER_LINK_OPTIONS "")
 
+add_library(cxlalloc_static STATIC IMPORTED)
+set_target_properties(cxlalloc_static PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../../target/release/libcxlalloc_static.a)
+
 list(APPEND TPCCRUNNER_SRCS "${BENCH_SRCS}" "${CC_SRCS}" "${UTILS_SRCS}")
 list(APPEND TPCCRUNNER_COMPILE_DEFINITIONS "${LOG_LEVEL_DEFINITION}")
 list(APPEND TPCCRUNNER_COMPILE_OPTIONS "${COMMON_COMPILE_FLAGS}")
 list(APPEND TPCCRUNNER_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/")
-list(APPEND TPCCRUNNER_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/mimalloc/include")
+list(APPEND TPCCRUNNER_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/../../cxlalloc-static/include")
 list(APPEND TPCCRUNNER_INCLUDE_DIRECTORIES "${CMAKE_BINARY_DIR}/_deps/src/")
 list(APPEND TPCCRUNNER_INCLUDE_DIRECTORIES "${CC_INCLUDE_DIRECTORIES}")
-list(APPEND TPCCRUNNER_LINK_LIBRARIES "mimalloc")
+list(APPEND TPCCRUNNER_LINK_LIBRARIES "cxlalloc_static")
 list(APPEND TPCCRUNNER_LINK_LIBRARIES "${CC_LINK_LIBRARIES}")
 if (APPLE)
   list(APPEND TPCCRUNNER_COMPILE_OPTIONS "-fvisibility=hidden")

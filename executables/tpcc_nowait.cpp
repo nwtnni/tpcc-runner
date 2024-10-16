@@ -17,7 +17,7 @@
 #include "utils/utils.hpp"
 
 volatile mrcu_epoch_type active_epoch = 1;
-volatile std::uint64_t globalepoch = 1;
+volatile relaxed_atomic<uint64_t> globalepoch = 1;
 volatile bool recovering = false;
 
 template <typename Protocol>
